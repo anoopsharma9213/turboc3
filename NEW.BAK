@@ -1,0 +1,34 @@
+#include<stdio.h>
+#include<conio.h>
+
+struct e{
+	 char n[50],mn[11];
+	 int en,sal;
+	};
+
+struct p{
+	 struct e info,*link;
+	};
+
+void main()
+{
+ struct e *start=NULL;
+ struct p b;
+ char ch;
+ clrscr();
+ do{
+    printf("Enter Record:\n\n");
+    printf("Enter Name: ");
+    gets(b.info.n);
+    printf("Enter Employee No.: ");
+    scanf("%d",&b.info.en);
+    printf("Enter Mobile No.: ");
+    gets(b.info.mn);
+    printf("Enter Salary: ");
+    scanf("%d",&b.info.sal);
+    printf("\n\n\t\t\tWant to enter more record(Y/N):");
+
+    ch=getch();
+   }while(ch=='Y'||ch=='y');
+ getch();
+}

@@ -1,0 +1,574 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0214)http://f5check.rediff.com//bn/download.cgi/COPYG.CPP?login=chavighosh&session_id=5L22PK1KVKFmAEs91U5QWinHHbpFXpFU&formname=download&file_name=1196866087.S.19486.10892.f5mail13.rediffmail.com.old&filetype=text/plain -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2900.2180" name=GENERATOR></HEAD>
+<BODY><PRE>#include&lt;graphics.h&gt;
+#include&lt;dos.h&gt;
+#include&lt;fstream.h&gt;
+#include&lt;conio.h&gt;
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+#include&lt;ctype.h&gt;
+//void createfile();//To create file having a list of words along with their hints.
+void mainscr();//To display the main screen.
+void sndscr();//To display the second screen.
+void menu();//To display the menu.
+void nugame(int n,snp p);//To start a new game.
+void op();//To open the options window.
+void inst();//To display the instructions.
+int bc();//To manipulate the background colour.
+void score(snp p);//To manipulate the score and make a record of the scores in ascending order.
+void tu();//To display the 'thank you' window.
+void nugame2(int n,snp p);//To start a game  with only 2 chances.
+void nugame3(int n,snp p);//To start a game with only 1 chance.
+void go();//To display the GAME OVER window.
+void showscore();
+void showviews();
+class word
+{
+	char wd[30];
+	char hint[100];
+ public:void input()
+	{
+		cout&lt;&lt;"\n Hint:";
+		gets(hint);
+		cout&lt;&lt;"\n Word:";
+		gets(wd);
+	}
+	char* rethint()
+	{
+		return (hint);
+	}
+	void disw();
+	word pickw();
+	char* retwrd()
+	{
+		return wd;
+	}
+
+};
+class snp
+{
+	char pna[20];
+	int score;
+ public:snp(char n[20])
+	{
+		strcpy(pna,n);
+		score=0;
+	}
+	void increase()
+	{
+		score=score+5;
+	}
+	void display()
+	{
+		cout&lt;&lt;"\n Player's name:"&lt;&lt;pna;
+		cout&lt;&lt;"\n Score:"&lt;&lt;score;
+	}
+};
+void main()
+{
+	//createfile();
+	int gd=DETECT;
+	int gm;
+	initgraph(&amp;gd,&amp;gm,"c:\\tc\\bgi");
+	/*ofstream a("thanku.dat",ios::binary);
+	char s[]="FEEDBACK:";
+	a.write((char*)&amp;s,sizeof(s));
+	a.close();  */
+	/*mainscr();
+	cleardevice();
+	sndscr();
+	cleardevice();
+	menu();
+	ofstream a("scores.dat",ios::binary);
+	a.close();     */
+	word x,y;
+	y=x.pickw();
+	settextstyle(1,0,3);
+	//setcolor(n);
+	outtextxy(78,80,"Guess the word!!");
+	setcolor(4);
+	outtextxy(170,190,y.rethint());
+	cout&lt;&lt;"\n\n\n\n\n\"";
+	y.disw();
+	//drawing the figures.
+	circle(70,190,35);
+	settextstyle(1,0,3);
+	outtextxy(54,154,".");
+	outtextxy(80,154,".");
+	arc(68,194,180,2,20);
+	circle(146,190,35);
+	settextstyle(1,0,3);
+	outtextxy(130,154,".");
+	outtextxy(156,154,".");
+	arc(144,194,180,2,20);
+	circle(220,190,35);
+	settextstyle(1,0,3);
+	outtextxy(204,154,".");
+	outtextxy(230,154,".");
+	arc(218,194,180,2,20);
+	//figures drawn.
+	char s[100];
+	gets(s);
+	/*if(strcmpi(s,y.retwrd())==0)
+	{
+		//p.increase();
+		//nugame(n,p);
+	}
+	else
+		nugame2(n,p);   */
+	getch();
+}
+void createfile()
+{
+	//creating the list of words to play with
+	word w;
+	char choice='y';
+	int i=1;
+	ofstream a("wordlist.dat",ios::binary);
+	while(choice=='y')
+	{
+
+		a.write((char*)&amp;w,sizeof(w));
+		i++;
+		cout&lt;&lt;"\n Enter another word:";
+		cin&gt;&gt;choice;
+	}
+	a.close();
+	cout&lt;&lt;"\n the list of the words is saved.";
+	getch();
+}
+void mainscr()
+{
+	//displaying the main screen.
+	settextstyle(3,0,9);
+	setcolor(12);
+	outtextxy(98,100,"WORDZILLA");
+	setcolor(BLUE);
+	circle(302,335,50);
+	settextstyle(3,0,4);
+	line(322,324,338,314);
+	line(274,308,288,324);
+	outtextxy(280,300,".");
+	outtextxy(326,300,".");
+	arc(304,342,170,8,34);
+	setcolor(MAGENTA);
+	settextstyle(3,0,4);
+	outtextxy(60,400,"Loading.....");
+	for(int i=0;i&lt;5;i++)
+	{
+		setcolor(BLACK);
+		outtextxy(60,400,"Loading........");
+		delay(2000);
+		setcolor(MAGENTA);
+		outtextxy(60,400,"Loading........");
+		delay(2000);
+	}
+	delay(1000);
+}
+void sndscr()
+{
+	//printing the second screen.
+	settextstyle(3,0,4);
+	setcolor(WHITE);
+	outtextxy(205,300,"Produced by:");
+	line(202,340,400,340);
+	outtextxy(305,380,"Ruhi Mudgil");
+	delay(2000);
+}
+void menu()
+{
+
+	settextstyle(10,0,2);
+	setcolor(14);
+	outtextxy(100,100,"MENU:");
+	settextstyle(9,0,2);
+	setcolor(7);
+	outtextxy(180,150,"1.New Game");
+	outtextxy(280,250,"2.Options");
+	outtextxy(380,350,"3.Exit");
+	int i=0;
+	char choice;
+	do
+	{
+		settextstyle(10,0,2);
+		setcolor(i);
+		outtextxy(33,15,"WELCOME TO THE MENU!!");
+		delay(1000);
+		i++;
+		setcolor(YELLOW);
+		settextstyle(3,0,4);
+		line(222,224,238,214);
+		line(174,208,188,224);
+		outtextxy(180,200,".");
+		outtextxy(226,200,".");
+		arc(204,242,170,8,34);
+		if(kbhit())
+		{
+			choice=getch();
+			break;
+		}
+
+	}
+	while(i&lt;=15);
+	if(choice==1)
+	{
+		cleardevice();
+		char r[20];
+		cout&lt;&lt;"\n Enter player's name:";
+		cin&gt;&gt;r;
+		snp p(r);
+		int y=bc();
+		nugame(y,p);
+	}
+	if(choice==2)
+		op();
+	if(choice==3)
+	{
+		cleardevice();
+		tu();
+	}
+}
+void nugame(int n,snp p)
+{
+	word x,y;
+	y=x.pickw();
+	settextstyle(1,0,3);
+	setcolor(n);
+	outtextxy(78,80,"Guess the word!!");
+	setcolor(4);
+	outtextxy(170,190,y.rethint());
+	cout&lt;&lt;"\n\n\n\n\n\"";
+	y.disw();
+	//drawing the figures.
+	circle(70,190,35);
+	settextstyle(1,0,3);
+	outtextxy(54,154,".");
+	outtextxy(80,154,".");
+	arc(68,194,180,2,20);
+	circle(146,190,35);
+	settextstyle(1,0,3);
+	outtextxy(130,154,".");
+	outtextxy(156,154,".");
+	arc(144,194,180,2,20);
+	circle(220,190,35);
+	settextstyle(1,0,3);
+	outtextxy(204,154,".");
+	outtextxy(230,154,".");
+	arc(218,194,180,2,20);
+	//figures drawn.
+	char s[100];
+	gets(s);
+	if(strcmpi(s,y.retwrd())==0)
+	{
+		p.increase();
+		nugame(n,p);
+	}
+	else
+		nugame2(n,p);
+
+}
+word word::pickw()
+{
+	randomize();
+	int n;
+	word x;
+	fstream a("Wordlist.dat",ios::binary|ios::in|ios::out);
+	n=random(100);
+	n++;
+	a.seekg(n);
+	a.read((char*)&amp;x,sizeof(x));
+	return x;
+}
+void word::disw()
+{
+	for(int i=0;i&lt;strlen(wd);i++)
+	{
+		if(isalpha(wd[i]))
+		{
+			cout&lt;&lt;"_";
+		}
+	}
+}
+void op()
+{
+	cleardevice();
+	int choice;
+	settextstyle(10,0,2);
+	setcolor(14);
+	outtextxy(100,100,"OPTIONS:");
+	settextstyle(9,0,2);
+	setcolor(7);
+	outtextxy(180,150,"1.Background Color");
+	outtextxy(280,250,"2.Instructions");
+	outtextxy(380,350,"3.Scores");
+	outtextxy(480,450,"4.View user's respond");
+	outtextxy(580,550,"5.Return to the main menu.");
+	if(choice==1)
+	{
+		cleardevice();
+		bc();
+	}
+	if(choice==2)
+	{
+		cleardevice();
+		inst();
+	}
+	if(choice==3)
+	{
+		cleardevice();
+		showscore();
+	}
+	if(choice==4)
+	{
+		cleardevice();
+		showviews();
+	}
+	if(choice==5)
+	{
+		cleardevice();
+		menu();
+	}
+}
+void inst()
+{
+	char chr[]="Welcome to WORDZILLA!! The game tests your IQ level!! So if you think that you have the knowledge of things and events happening around you and still have the 'nitty-gritties' of what you have studied in your elementary classes then you must be able to play the game. \nThe job is simple! \nYou'll be given a hint and on the basis of that hint you have to guess the word. The word can be a name of a person,place or any 'DAMN' thing on this planet.In the first go, you have three chances to guess your word.If you are able to do so, then you get another word which you have to guess.But if you fail to guess the word then you get another word with only two chances.If you guess the word then you'll be given a new word with only two chances to guess. Unfortunately, if you fail then you will be given a new word with only one chance to guess.For every correct answer, you get 5 points. \nIf you are not able to guess a word in one chance, THE GAME IS OVER DUDE!!!.......Happy thinking and all the best!!!...";
+	cout&lt;&lt;chr;
+	cout&lt;&lt;"\n \n \n";
+	cout&lt;&lt;"\n To return to the main menu, press enter.";
+	if(kbhit())
+		menu();
+}
+void tu()
+{
+	char s[150];
+	fstream a("thanku.dat",ios::binary||ios::app);
+	cout&lt;&lt;"\n THANK YOU FOR PLAYING 'WORDZILLA'.";
+	cout&lt;&lt;"\n HOPE YOU ENJOYED IT.";
+	cout&lt;&lt;"\n Please enter your views about the game (only the good ones..):";
+	gets(s);
+	a.write((char*)&amp;s,sizeof(s));
+	a.close();
+}
+void nugame2(int n,snp p)
+{
+	word x,y;
+	y=x.pickw();
+	settextstyle(1,0,3);
+	setcolor(9);
+	outtextxy(78,80,"Guess the word!!");
+	setcolor(4);
+	outtextxy(170,190,y.rethint());
+	cout&lt;&lt;"\n\n\n\n\n\"";
+	y.disw();
+	//drawing the figures.
+	circle(70,190,35);
+	settextstyle(1,0,3);
+	outtextxy(54,154,".");
+	outtextxy(80,154,".");
+	arc(68,194,180,2,20);
+	circle(146,190,35);
+	settextstyle(1,0,3);
+	outtextxy(130,154,".");
+	outtextxy(156,154,".");
+	arc(144,194,180,2,20);
+	//figures drawn.
+	char s[100];
+	gets(s);
+	if(strcmpi(s,y.retwrd())==0)
+	{
+		p.increase();
+		nugame2(n,p);
+	}
+	else
+		nugame3(n,p);
+}
+void nugame3(int n,snp p)
+{
+	word x,y;
+	y=x.pickw();
+	settextstyle(1,0,3);
+	setcolor(9);
+	outtextxy(78,80,"Guess the word!!");
+	setcolor(4);
+	outtextxy(170,190,y.rethint());
+	cout&lt;&lt;"\n\n\n\n\n\"";
+	y.disw();
+	//drawing the figures.
+	circle(70,190,35);
+	settextstyle(1,0,3);
+	outtextxy(54,154,".");
+	outtextxy(80,154,".");
+	arc(68,194,180,2,20);
+	//figures drawn.
+	char s[100];
+	gets(s);
+	if(strcmpi(s,y.retwrd())==0)
+	{
+		p.increase();
+		nugame3(n,p);
+	}
+	else
+		scores(p);
+		go();
+}
+void go()
+{
+	setcolor(WHITE);
+	settextstyle(1,0,7);
+	outtextxy(98,100,"GAME OVER!");
+	int i=0;
+	do
+	{
+		setcolor(YELLOW);
+		circle(304,335,50);
+		settextstyle(3,0,4);
+		line(322,324,338,314);
+		line(274,308,288,324);
+		outtextxy(280,300,".");
+		outtextxy(326,300,".");
+		arc(304,342,170,8,34);
+		setcolor(BLACK);
+		circle(304,335,50);
+		settextstyle(3,0,4);
+		line(322,324,338,314);
+		line(274,308,288,324);
+		outtextxy(280,300,".");
+		outtextxy(326,300,".");
+		arc(304,342,170,8,34);
+		delay(1000);
+		setcolor(YELLOW);
+		circle(304,335,50);
+		settextstyle(3,0,4);
+		line(322,324,338,314);
+		line(274,308,288,324);
+		outtextxy(280,300,".");
+		outtextxy(326,300,".");
+		arc(304,342,170,8,34);
+		delay(1000);
+		i++;
+	}while(i&lt;5);
+	setcolor(11);
+	settextstyle(1,0,3);
+	outtextxy(100,397,"Better Luck next time.......");
+}
+int bc()
+{
+	setcolor(WHITE);
+	settextstyle(1,0,2);
+	int choice;
+	outtextxy(56,86,"Select the colour in which you want to play the game:");
+	setcolor(BLUE);
+	outtextxy(67,128,"1.Blue");
+	setcolor(YELLOW);
+	outtextxy(67,148,"2.Yellow");
+	setcolor(GREEN);
+	outtextxy(67,168,"3.Green");
+	setcolor(BROWN);
+	outtextxy(67,188,"4.Brown");
+	setcolor(RED);
+	outtextxy(67,208,"5.Red");
+	setcolor(CYAN);
+	outtextxy(67,228,"6.Cyan");
+	setcolor(MAGENTA);
+	outtextxy(67,248,"7.Magenta");
+	do
+	{
+		setcolor(BLUE);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 1 for blue colour...");
+		delay(1000);
+		setcolor(BLACK);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 1 for blue colour...");
+		delay(1000);
+		setcolor(YELLOW);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 2 for yellow colour...");
+		delay(1000);
+		setcolor(BLACK);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 2 for yellow colour...");
+		delay(1000);
+		setcolor(GREEN);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 3 for green colour...");
+		delay(1000);
+		setcolor(BLACK);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 3 for green colour...");
+		delay(1000);
+		setcolor(BROWN);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 4 for brown colour...");
+		delay(1000);
+		setcolor(BLACK);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 4 for brown colour...");
+		delay(1000);
+		setcolor(RED);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 5 for red colour...");
+		delay(1000);
+		setcolor(BLACK);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 5 for red colour...");
+		delay(1000);
+		setcolor(CYAN);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 6 for cyan colour...");
+		delay(1000);
+		setcolor(BLACK);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 6 for cyan colour...");
+		delay(1000);
+		setcolor(MAGENTA);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 7 for magenta colour...");
+		delay(1000);
+		setcolor(BLACK);
+		settextstyle(3,0,3);
+		outtextxy(120,397,"Press 7 for magenta colour...");
+		delay(1000);
+	}while(kbhit());
+	cin&gt;&gt;choice;
+	return choice;
+}
+void score(snp n)
+{
+	fstream a("scores.dat",ios::binary|ios::app);
+	a.write((char*)&amp;n,sizeof(n));
+	a.close();
+}
+void showscore()
+{
+	cleardevice();
+	snp n;
+	ifstream a("scores.dat",ios::binary);
+	while(!a.eof())
+	{
+		a.read((char*)&amp;n,sizeof(n));
+		if(a.eof())
+			break;
+		n.display();
+	}
+	a.close();
+}
+void showviews()
+{
+	char s[150];
+	ifstream a("thanku.dat",ios::binary);
+	while(!a.eof())
+	{
+		a.read((char*)&amp;s,sizeof(s));
+		if(a.eof())
+			break;
+		cout&lt;&lt;s;
+		cout&lt;&lt;endl;
+	}
+	s.close();
+}</PRE></BODY></HTML>

@@ -1,0 +1,69 @@
+void main()
+{
+ int i,n,a[10],num,j,beg,end,mid,flag;
+ clrscr();
+ printf("Enter number of elements: ");
+ scanf("%d",&n);
+ for(i=0;i<n;i++)
+ {
+  printf("Enter %d number: ",i+1);
+  scanf("%d",&a[i]);
+ }
+ printf("Enter element to search :");
+ scanf("%d",&num);
+ printf("Linear Search: \n");
+ for(i=0;i<n;i++)
+ {
+  if(a[i]==num)
+  {
+   printf("Number found at %d position!!!",i+1);
+   break;
+  }
+ }
+ if(i==n)
+ {
+  printf("Number not found!!!");
+ }
+
+ printf("\n\nBinary Search: \n");
+ for(i=0;i<n-1;i++)
+  for(j=i+1;j<n;j++)
+   if(a[i]>a[j])
+   {
+    a[i]=a[i]+a[j];
+    a[j]=a[i]-a[j];
+    a[i]=a[i]-a[j];
+   }
+//   for(i=0;i<n;i++)
+// {
+//  printf("%d ",a[i]);
+//  }
+ beg = 0;
+ end =n-1;
+ mid = (beg+end)/2;
+ flag=0;
+ while(beg<=end)
+ {
+  if(a[mid]==num)
+  {
+   printf("Number found at %d position!!!",mid+1);
+   flag++;
+   break;
+  }
+  else if(a[mid]<num)
+  {
+   beg =  mid+1;
+   mid = (beg+end)/2;
+  }
+  else
+  {
+   end =  mid-1;
+   mid = (beg+end)/2;
+  }
+ }
+ if(flag==0)
+ {
+  printf("Number not found!!!");
+ }
+ getch();
+}

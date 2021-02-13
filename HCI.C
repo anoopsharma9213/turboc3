@@ -1,0 +1,604 @@
+#include<stdio.h>
+#include<dirent.h>
+#include<graphics.h>
+#include<string.h>
+#include<dos.h>
+
+void display();
+void icon(int,int,int,int);
+void getdir();
+void reload();
+void callmouse();
+void mousepos();
+void taskbar();
+void dispfile();
+void closef();
+void winswap();
+
+int iconpos[2][20]={{90,190,290,390,490,90,190,290,390,490,90,190,290,390,490,90,190,290,390,490}
+		    ,{50,50,50,50,50,150,150,150,150,150,250,250,250,250,250,350,350,350,350,350}};
+
+int gd= DETECT, gm, dirn[10], desk, page, nop,show[23],glow[23],win,awin,order[10];
+char path[10][64], dirl[10][50][64], winp[10][64],name[10][64];
+union REGS in, out;
+DIR *dir;
+struct dirent *ent;
+FILE *fp;
+
+
+int main()
+{
+ order[0]=0;
+ desk=0;
+ page=0;
+ win=0;
+ awin=0;
+ strcpy(path[desk],"C:\\");
+ strcpy(winp[win],path[desk]);
+ strcpy(name[win],"Desktop");
+ display();
+ in.x.ax=4;
+ in.x.cx=100;
+ in.x.dx=100;
+ int86(51,&in,&out);
+ while(1)
+ {
+  callmouse();
+  mousepos();
+ }
+// return 0;
+}
+
+void display()
+{
+ int i,j;
+ clrscr();
+ initgraph(&gd,&gm,"");
+ setcolor(11);
+ for(i=0;i<4;i++)
+ {
+  arc(5+i,5+i,90,180,5);
+  arc(5+i,430-i,180,270,5);
+  arc(634-i,430-i,270,0,5);
+  arc(634-i,5+i,0,90,5);
+  line(0+i,5+i,0+i,430-i);
+  line(5+i,435-i,634-i,435-i);
+  line(639-i,430-i,639-i,5+i);
+  line(634-i,0+i,5+i,0+i);
+  line(0,30+i,639,30+i);
+ }
+/* for(i=0;i<5;i++)
+  icon(90+100*i,50);
+ for(i=0;i<4;i++)
+  icon(90,50+100*i);*/
+
+ rectangle(604,9,621,25);
+ line(607,12,618,22);
+ line(618,12,607,22);
+
+ setcolor(14);
+ settextstyle(8,0,2);
+ outtextxy(10,1,path[desk]);
+ getdir();
+ nop=dirn[desk]/20;
+ printf("%d",nop);
+
+ show[0]=0;
+ show[1]=0;
+ if(dirn[desk]>20)
+ {
+  if(page==0)
+  {
+   show[0]=1;
+   show[1]=0;
+   rectangle(604,400,621,416);
+   line(607,403,618,408);
+   line(618,408,607,413);
+  }
+  else if(page==nop)
+  {
+   show[0]=0;
+   show[1]=1;
+   rectangle(585,400,602,416);
+   line(599,403,588,408);
+   line(588,408,599,413);
+  }
+  else
+  {
+   show[0]=1;
+   show[1]=1;
+   rectangle(604,400,621,416);
+   line(607,403,618,408);
+   line(618,408,607,413);
+   rectangle(585,400,602,416);
+   line(599,403,588,408);
+   line(588,408,599,413);
+  }
+ }
+
+ for(i=0;i<20;i++)
+  icon(iconpos[0][i],iconpos[1][i],page*20+i,10);
+ taskbar();
+}
+
+void icon(int x,int y, int z, int c)
+{
+ int i;
+ if(z<dirn[desk])
+ {
+  setcolor(c);
+  for(i=0;i<3;i++)
+   rectangle(x+i,y+i,x+50-i,y+60-i);
+  for(i=0;i<20;i++)
+   line(x+50-i,y,x+50,y+i);
+  settextstyle(7,0,1);
+  if(strstr(dirl[desk][z],".TXT")!=0)
+   outtextxy(x+10,y+20,".txt");
+  else if(strstr(dirl[desk][z],".C")!=0)
+   outtextxy(x+10,y+20,".C");
+  else if(strstr(dirl[desk][z],".")!=0)
+   outtextxy(x+10,y+20,"file");
+  else outtextxy(x+10,y+20,"dir");
+  settextstyle(2,0,4);
+  outtextxy(x,y+62,dirl[desk][z]);
+ }
+}
+
+//50,50
+
+void getdir()
+{
+ dirn[desk]=0;
+ if((dir = opendir(path[desk]))!=NULL)
+ {
+  while((ent = readdir(dir))!=NULL)
+  {
+   if(strcmp(ent->d_name,".")!=0&&strcmp(ent->d_name,"..")!=0)
+   {
+    strcpy(dirl[desk][dirn[desk]],ent->d_name);
+    dirn[desk]++;
+   }
+  }
+  closedir(dir);
+ }
+}
+
+
+/*void getdir()
+{
+ DIR *dir;
+ struct dirent *ent;
+ if((dir = opendir(path))!=NULL)
+ {
+  while((ent = readdir(dir))!=NULL)
+  {
+   printf("%s\n",ent->d_name);
+   getch();
+  }
+  closedir(dir);
+ }
+ else
+ {
+  perror("");
+ }
+}*/
+
+//Mouse Programming
+
+void callmouse()
+{
+ in.x.ax = 1;
+ int86(51,&in,&out);
+ mousepos();
+}
+
+void mousepos()
+{
+ int xpos,ypos,click,i,j;
+ char temp[64],ch,ch1;
+ in.x.ax=3;
+ int86(51,&in,&out);
+ click = out.x.bx;
+ xpos=out.x.cx;
+ ypos=out.x.dx;
+
+ if(kbhit())
+ {
+  ch=getch();
+  if(ch==0)
+  {
+   ch1=getch();
+   if(ch1==-108)
+   {
+    if(win!=0)
+     winswap();
+   }
+  }
+ }
+ for(i=0;i<=win;i++)
+  if(xpos>=576-i*64&&xpos<=636-i*64&&ypos>=444&&ypos<=464)
+  {
+   setcolor(4);
+   ellipse(606-i*64,454,0,360,30,10);
+   settextstyle(2,0,4);
+   outtextxy(582-i*64,448,name[i]);
+   if(click==2)
+   {
+    delay(200);
+    cleardevice();
+    awin=i;
+    if(awin==0)
+     reload();
+    else dispfile();
+   }
+  }
+  else if(!(xpos>=576-i*64&&xpos<=636-i*64&&ypos>=444&&ypos<=464))
+  {
+   if(awin==i)
+   setcolor(10);
+   else setcolor(14);
+   ellipse(606-i*64,454,0,360,30,10);
+   settextstyle(2,0,4);
+   outtextxy(582-i*64,448,name[i]);
+  }
+
+ for(i=0;i<20;i++)
+  if(xpos>=iconpos[0][i]&&xpos<=iconpos[0][i]+50&&ypos>=iconpos[1][i]&&ypos<=iconpos[1][i]+60&&awin==0)
+  {
+   icon(iconpos[0][i],iconpos[1][i],page*20+i,4);
+   if(click==2)
+   {
+    delay(300);
+    cleardevice();
+   // printf("%s",path[desk]);
+    if(strstr(dirl[desk][page*20+i],".TXT")!=0||strstr(dirl[desk][page*20+i],".C")!=0)
+    {
+     win++;
+     awin=win;
+     strcpy(name[awin],dirl[desk][page*20+i]);
+     strcpy(winp[awin],path[desk]);
+     strcat(winp[awin],dirl[desk][page*20+i]);
+     order[win]=awin;
+     dispfile();
+    }
+    else if(strstr(dirl[desk][page*20+i],".")!=0)reload();
+    else
+    {
+     desk++;
+     strcpy(path[desk],path[desk-1]);
+     strcat(path[desk],dirl[desk-1][page*20+i]);
+     strcat(path[desk],"\\");
+     reload();
+    }
+   }
+  }
+  else if(!(xpos>=iconpos[0][i]&&xpos<=iconpos[0][i]+50&&ypos>=iconpos[1][i]&&ypos<=iconpos[1][i]+60)&&awin==0)
+  {
+   icon(iconpos[0][i],iconpos[1][i],page*20+i,10);
+  }
+
+ if(desk!=0&&xpos>=575&&xpos<=591&&ypos>=9&&ypos<=25&&awin==0)
+ {
+  setcolor(4);
+  circle(583,17,8);
+  line(588,14,583,14);
+  line(588,20,583,20);
+  line(585,11,575,17);
+  line(585,23,575,17);
+  if(click==2)
+  {
+   delay(200);
+   cleardevice();
+   desk--;
+   reload();
+  }
+ }
+ else if(desk!=0&&!(xpos>=575&&xpos<=591&&ypos>=9&&ypos<=25)&&awin==0)
+ {
+  setcolor(10);
+  circle(583,17,8);
+  line(588,14,583,14);
+  line(588,20,583,20);
+  line(585,11,575,17);
+  line(585,23,575,17);
+ }
+
+ if(xpos>=604&&xpos<=621&&ypos>=9&&ypos<=25)
+ {
+  setcolor(4);
+  rectangle(604,9,621,25);
+  line(607,12,618,22);
+  line(618,12,607,22);
+  if(click==2)
+  {
+   delay(200);
+   if(awin==0)
+   {
+    closegraph();
+    exit(0);
+   }
+   else
+   {
+    closef();
+   }
+  }
+ }
+ else if(!(xpos>=604&&xpos<=621&&ypos>=9&&ypos<=25))
+ {
+  setcolor(10);
+  rectangle(604,9,621,25);
+  line(607,12,618,22);
+  line(618,12,607,22);
+ }
+ if(xpos>=604&&xpos<=621&&ypos>=400&&ypos<=416&&show[0]==1)
+ {
+  setcolor(4);
+  rectangle(604,400,621,416);
+  line(607,403,618,408);
+  line(618,408,607,413);
+  if(click==2)
+  {
+   delay(200);
+   page++;
+   reload();
+  }
+ }
+ else if(!(xpos>=604&&xpos<=621&&ypos>=400&&ypos<=416)&&show[0]==1)
+ {
+  setcolor(14);
+  rectangle(604,400,621,416);
+  line(607,403,618,408);
+  line(618,408,607,413);
+ }
+
+ if(xpos>=585&&xpos<=602&&ypos>=400&&ypos<=416&&show[1]==1)
+ {
+  setcolor(4);
+  rectangle(585,400,602,416);
+  line(599,403,588,408);
+  line(588,408,599,413);
+  if(click==2)
+  {
+   delay(200);
+   page--;
+   reload();
+  }
+ }
+ else if(!(xpos>=585&&xpos<=602&&ypos>=400&&ypos<=416)&&show[1]==1)
+ {
+  setcolor(14);
+  rectangle(585,400,602,416);
+  line(599,403,588,408);
+  line(588,408,599,413);
+ }
+}
+
+void reload()
+{
+/* setcolor(0);
+ rectangle(6,40,630,420);
+ setfilstyle(0);*/
+ int i,j,end,start;
+ cleardevice();
+ setcolor(11);
+ for(i=0;i<4;i++)
+ {
+  arc(5+i,5+i,90,180,5);
+  arc(5+i,430-i,180,270,5);
+  arc(634-i,430-i,270,0,5);
+  arc(634-i,5+i,0,90,5);
+  line(0+i,5+i,0+i,430-i);
+  line(5+i,435-i,634-i,435-i);
+  line(639-i,430-i,639-i,5+i);
+  line(634-i,0+i,5+i,0+i);
+  line(0,30+i,639,30+i);
+ }
+
+ rectangle(604,9,621,25);
+ line(607,12,618,22);
+ line(618,12,607,22);
+
+ if(desk!=0)
+ {
+  circle(583,17,8);
+  line(588,14,583,14);
+  line(588,20,583,20);
+  line(585,11,575,17);
+  line(585,23,575,17);
+ }
+
+ setcolor(14);
+ settextstyle(8,0,2);
+ outtextxy(10,1,path[desk]);
+
+ getdir();
+ nop=dirn[desk]/20;
+
+ show[0]=0;
+ show[1]=0;
+
+ if(dirn[desk]>20)
+ {
+  if(page==0)
+  {
+   show[0]=1;
+   show[1]=0;
+   rectangle(604,400,621,416);
+   line(607,403,618,408);
+   line(618,408,607,413);
+  }
+  else if(page==nop)
+  {
+   show[0]=0;
+   show[1]=1;
+   rectangle(585,400,602,416);
+   line(599,403,588,408);
+   line(588,408,599,413);
+  }
+  else
+  {
+   show[0]=1;
+   show[1]=1;
+   rectangle(604,400,621,416);
+   line(607,403,618,408);
+   line(618,408,607,413);
+   rectangle(585,400,602,416);
+   line(599,403,588,408);
+   line(588,408,599,413);
+  }
+ }
+
+ for(i=0;i<20;i++)
+  icon(iconpos[0][i],iconpos[1][i],page*20+i,10);
+
+ taskbar();
+}
+
+void taskbar()
+{
+ int i;
+ for(i=0;i<=win;i++)
+ {
+  if(awin==i)
+   setcolor(10);
+  else setcolor(14);
+  ellipse(606-i*64,454,0,360,30,10);
+  settextstyle(2,0,4);
+  outtextxy(582-i*64,448,name[i]);
+ }
+}
+
+void dispfile()
+{
+ int i;
+ char ch;
+ show[0]=0;
+ show[1]=0;
+ setcolor(11);
+ for(i=0;i<4;i++)
+ {
+  arc(5+i,5+i,90,180,5);
+  arc(5+i,430-i,180,270,5);
+  arc(634-i,430-i,270,0,5);
+  arc(634-i,5+i,0,90,5);
+  line(0+i,5+i,0+i,430-i);
+  line(5+i,435-i,634-i,435-i);
+  line(639-i,430-i,639-i,5+i);
+  line(634-i,0+i,5+i,0+i);
+  line(0,30+i,639,30+i);
+ }
+
+ rectangle(604,9,621,25);
+ line(607,12,618,22);
+ line(618,12,607,22);
+
+ setcolor(14);
+ settextstyle(8,0,2);
+ outtextxy(10,1,winp[awin]);
+
+ gotoxy(10,5);
+ i=0;
+ fp = fopen(winp[awin],"r");
+ while(1)
+ {
+  ch=fgetc(fp);
+  if(ch==EOF||i>20)
+   break;
+  if(ch==10)
+  {
+   i++;
+   gotoxy(10,5+i);
+  }
+  else
+  {
+   printf("%c",ch);
+  }
+ }
+ fclose(fp);
+ taskbar();
+}
+
+void closef()
+{
+ int i,pos;
+ for(i=0;i<=win;i++)
+  if(order[i]==awin)
+  {
+   pos=i;
+   break;
+  }
+ for(i=0;i<=win;i++)
+  if(order[i]>order[pos])
+   order[i]-=1;
+ for(i=pos;i<=win;i++)
+  order[i]=order[i+1];
+
+ for(i=awin;i<=win;i++)
+ {
+  strcpy(winp[i],winp[i+1]);
+  strcpy(name[i],name[i+1]);
+ }
+ awin=0;
+ win--;
+ reload();
+}
+
+void winswap()
+{
+ char ch,ch1;
+ int i,pos;
+ setcolor(6);
+ setfillstyle(1,6);
+ fillellipse(319,239,450,50);
+ settextstyle(2,0,4);
+// for(i=0;i<=win;i++)
+//  printf("%d",order[i]);
+ for(i=win;i>=0;i--)
+ {
+  if(awin==0&&i==win)
+  {
+   pos=i;
+   setcolor(1);
+  }
+  else if(awin!=0&&i==win-1)
+  {
+   pos=i;
+   setcolor(1);
+  }
+  else setcolor(10);
+  outtextxy((324+(win/2)*62)-i*62,232,name[order[i]]);
+  ellipse((349+(win/2)*62)-i*62,239,0,360,30,30);
+ }
+ do{
+    ch=getch();
+    if(ch==0)
+    {
+     ch1=getch();
+     if(ch1==-108)
+     {
+      setcolor(10);
+      outtextxy((324+(win/2)*62)-pos*62,232,name[order[pos]]);
+      ellipse((349+(win/2)*62)-pos*62,239,0,360,30,30);
+      if(pos==0)
+       pos=win;
+      else pos--;
+      setcolor(1);
+      outtextxy((324+(win/2)*62)-pos*62,232,name[order[pos]]);
+      ellipse((349+(win/2)*62)-pos*62,239,0,360,30,30);
+     }
+    }
+    else if(ch==9)
+    {
+     awin=order[pos];
+     for(i=pos;i<win;i++)
+      order[i]=order[i+1];
+     order[win]=awin;
+    }
+   }while(ch!=9);
+   if(awin==0)
+    reload();
+   else
+   { cleardevice();
+     dispfile();
+   }
+}

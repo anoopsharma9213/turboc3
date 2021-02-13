@@ -1,0 +1,201 @@
+#include<stdio.h>
+#include<conio.h>
+#include<process.h>
+
+typedef struct node{
+		    int info;
+		    struct node *link;
+		   }list;
+
+list * getnode()
+{
+ list *newnode;
+ newnode=(list *)malloc(sizeof(list));
+ if(newnode==NULL)
+ {printf("OverFLOW");
+  exit(0);
+ }
+ return newnode;
+}
+
+list *START=NULL,*ptr;
+
+void insert();
+void insertn();
+void display();
+void deletee();
+list* search(int);
+list* searchd(int);
+
+void main()
+{
+ char ch;
+ do{
+    clrscr();
+    printf("\nEnter 1: Creating and Updating List\n");
+    printf("Enter 2: Inserting new element in between list\n");
+    printf("Enter 3: Display List\n");
+    printf("Enter 4: Delete element\n");
+    printf("Enter 0: Exit");
+    printf("\n\nEnter choice : ");
+    ch=getch();
+    switch(ch)
+    {
+     case '1':insert();
+	      break;
+     case '2':insertn();
+	      break;
+     case '3':display();
+	      break;
+     case '4':deletee();
+	      break;
+     case '0':exit(0);
+	      break;
+     default :printf("\n\n\t\t\tWrong choice!!!");
+    }
+   }while(1);
+}
+
+
+void insert()
+{
+ int num;
+ char ch;
+ list *n;
+ clrscr();
+ do{
+    printf("\nEnter Element : ");
+    scanf("%d",&num);
+    n=getnode();
+    if(START==NULL)
+    {
+     n->info=num;
+     n->link=NULL;
+     START=n;
+     ptr=n;
+    }
+    else{
+	 n->info=num;
+	 n->link=NULL;
+	 ptr->link=n;
+	 ptr=n;
+	}
+    printf("Want to enter more elements(y/n) :");
+    ch=getch();
+   }while(ch=='Y'||ch=='y');
+}
+
+void insertn()
+{
+ int num,nex;
+ list *p,*loc;
+ if(START==NULL)
+ {
+  printf("\n\n\t\t\tList not Present!!!");
+  getch();
+ }
+ else{
+      clrscr();
+      display();
+      printf("Enter Element :");
+      scanf("%d",&num);
+      printf("Enter element after which element is to be inserted :");
+      scanf("%d",&nex);
+      loc=search(nex);
+      if(loc==NULL)
+      {
+       printf("Element not present");
+       getch();
+      }
+      else{
+	   p=getnode();
+	   p->info=num;
+	   p->link=loc->link;
+	   loc->link=p;
+	   printf("\n\n\t\t\tElement Inserted ");
+	   getch();
+	  }
+     }
+}
+
+void display()
+{
+ list *p;
+ if(START==NULL)
+ {
+  printf("\n\n\t\t\tList not Present!!!");
+  getch();
+ }
+ else{
+      clrscr();
+      printf("\nElements: \n");
+      p=START;
+      while(p!=NULL)
+      {
+       printf("%d ",p->info);
+       p=p->link;
+      }
+      getch();
+     }
+}
+
+void deletee()
+{
+ int num;
+ list *locp,*loc;
+ if(START==NULL)
+ {
+  printf("\n\n\t\t\tList not Present!!!");
+  getch();
+ }
+ else{
+      clrscr();
+      display();
+      printf("\nEnter Element to be deleted : ");
+      scanf("%d",&num);
+      loc=search(num);
+      locp=searchd(num);
+      if(loc==NULL)
+      {
+       printf("\n\n\t\t\tElement not found!!!");
+       getch();
+      }
+      else if(loc==START)
+	   {
+	    START=START->link;
+	    printf("\n\n\t\t\tElement deleted ");
+	    getch();
+	   }
+      else{
+	   locp->link=loc->link;
+	   printf("\n\n\t\t\tElement deleted ");
+	   getch();
+	  }
+     }
+
+}
+
+list* search(int num)
+{
+ list *p;
+ p=START;
+ while(p!=NULL)
+ {if(p->info==num)
+   return p;
+  p=p->link;
+ }
+ return NULL;
+}
+
+list* searchd(int num)
+{
+ list *p,*s;
+ p=s=START;
+ while(p!=NULL)
+ {if(p->info==num)
+   return s;
+  s=p;
+  p=p->link;
+ }
+ return NULL;
+}

@@ -1,0 +1,44 @@
+#include<stdio.h>
+
+void main()
+{
+ char frame[50];
+ int i,j,n,flag=0;
+ clrscr();
+ printf("Enter the frame in 1s and 0s: ");
+ scanf("%s",&frame);
+ n=strlen(frame);
+ for(i=0;frame[i]!='\0';i++)
+ {
+  flag=0;
+  if(frame[i]=='0')
+  {
+   for(j=i+1;j<=i+6;j++)
+    if(frame[j]!='1')
+     flag++;
+   if(flag==0)
+   {
+    for(j=i+8;j<=n;j++)
+     frame[j-8]=frame[j];
+    n=n-8;
+    i--;
+   }
+  }
+  else
+  {
+   for(j=i+1;j<=i+4;j++)
+    if(frame[j]!='1')
+     flag++;
+   if(flag==0)
+   {
+    for(j=i+5;j<=n;j++)
+     frame[j]=frame[j+1];
+    n--;
+    i+=4;
+   }
+  }
+ }
+ printf("Frame recieved: \n");
+ printf("%s",frame);
+ getch();
+}

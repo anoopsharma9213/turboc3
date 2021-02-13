@@ -1,0 +1,626 @@
+//Consists all the data part
+void PRODUCT::CREATE()
+{
+ int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+PRODUCT S;
+FP=fopen("INV.DAT","a+b");
+gotoxy(20,8);
+cout<<"ENTER PRODUCT NAME: ";
+fscanf(stdin,"%s",S.NAME);
+gotoxy(20,10);
+cout<<"ENTER PRODUCT ID: ";
+fscanf(stdin,"%ld",&S.ID);
+gotoxy(20,12);
+cout<<"ENTER UNIT COST PRICE: ";
+fscanf(stdin,"%f",&S.UCP);
+gotoxy(20,14);
+cout<<"ENTER HOLDING COST (IN PERCENTAGE): ";
+fscanf(stdin,"%ld",&S.HC);
+gotoxy(20,16);
+cout<<"ENTER FIX ORDER COST: ";
+fscanf(stdin,"%f",&S.FOC);
+gotoxy(20,18);
+cout<<"ENTER LEAD TIME (IN DAYS): ";
+fscanf(stdin,"%ld",&S.LT);
+gotoxy(20,20);
+cout<<"ENTER MINIMUM SAFETY STOCK PERCENTAGE: ";
+fscanf(stdin,"%f",&S.SS);
+gotoxy(20,22);
+cout<<"ENTER CATAGORY (MOVING AVERAGE<1> | SEASONAL INDEX<2>) : ";
+fscanf(stdin,"%ld",&S.CATAGORY);
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+gotoxy(20,6);
+cout<<"ENTER PREVIOUS SALES (LAST 24 MONTHS) : ";
+for(i=0; i<24; i++)
+{if(i<12)
+  gotoxy(10,8+i);
+ else gotoxy(40,8+(i-12));
+
+	cout<<"Sale of "<<i+1<<" Month : ";
+	fscanf(stdin,"%ld",&S.UNIT_SALES[i]);
+	S.QTR_SALES[i/3]=S.QTR_SALES[i/3]+S.UNIT_SALES[i];
+}
+fwrite(&S, sizeof(S), 1, FP);
+fclose(FP);
+gotoxy(20,24);
+cout<<"New Product is Inserted";
+getch();
+}
+
+
+void PRODUCT::DELETE()
+{
+ int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+ unsigned long int ID;
+ i=-1;
+ PRODUCT S;
+ gotoxy(20,7);
+ printf("ENTER ID NUMBER: ");
+ fscanf(stdin,"%ld",&ID);
+ FP=fopen("INV.DAT","r+b");
+ rewind(FP);
+ while( fread(&S, sizeof(S), 1, FP)!=0)
+ {
+  i++;
+  if(S.ID==ID)
+   {
+    S.ID=0;
+    fseek(FP, i*sizeof(S), SEEK_SET);
+    fwrite(&S, sizeof(S), 1, FP);
+    gotoxy(17,15);
+    cout<<"YOU DELETED RECORD OF: "<<S.NAME;
+    break;
+   }
+ }
+ if(feof(FP)){gotoxy(17,15);
+  cout<<"SORRY ID NUMBER NOT FOUND";}
+ fclose(FP);
+}
+
+
+void PRODUCT::UPDATE()
+{
+ int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+unsigned long int ID;
+ i=-1;
+PRODUCT S;
+gotoxy(20,6);
+printf("ENTER ID NUMBER: ");
+fscanf(stdin,"%ld",&ID);
+FP=fopen("INV.DAT","r+b");
+rewind(FP);
+while(fread(&S, sizeof(S), 1, FP)!=0)
+{
+i++;
+if(S.ID==ID)
+{gotoxy(20,8);
+cout<<"ENTER NEW ENTRIES";
+gets(S.NAME);
+gotoxy(20,10);
+cout<<"ENTER PRODUCT NAME: ";
+gets(S.NAME);
+gotoxy(20,12);
+cout<<"ENTER PRODUCT ID: ";
+fscanf(stdin,"%ld",&S.ID);
+gotoxy(20,14);
+cout<<"ENTER UNIT COST PRICE: ";
+fscanf(stdin,"%f",&S.UCP);
+gotoxy(20,16);
+cout<<"ENTER HOLDING COST (IN PERCENTAGE): ";
+fscanf(stdin,"%ld",&S.HC);
+gotoxy(20,18);
+cout<<"ENTER FIX ORDER COST: ";
+fscanf(stdin,"%f",&S.FOC);
+gotoxy(20,20);
+cout<<"ENTER LEAD TIME (IN DAYS): ";
+fscanf(stdin,"%ld",&S.LT);
+gotoxy(20,22);
+cout<<"ENTER MINIMUM SAFETY STOCK PERCENTAGE: ";
+fscanf(stdin,"%f",&S.SS);
+gotoxy(20,24);
+cout<<"ENTER CATAGORY (MOVING AVERAGE<1> | SEASONAL INDEX<2>) : ";
+fscanf(stdin,"%ld",&S.CATAGORY);
+setcolor(1);
+  for(int j=0;j<=313;j++)
+  {rectangle(319-j,47,320+j,473);
+  }
+  for(j=0;j<3;j++)
+  {
+   setcolor(4);
+   if(j==1)
+    setcolor(15);
+   rectangle(5+j,47+j,634-j,473-j);
+  }
+gotoxy(20,6);
+cout<<"ENTER PREVIOUS SALES (LAST 24 MONTHS) : ";
+for( j=0; j<24; j++)
+{
+	if(j<12)
+	gotoxy(10,8+j);
+	else gotoxy(40,8+(j-12));
+	cout<<"Sale of "<<j+1<<" Month : ";
+	fscanf(stdin,"%ld",&S.UNIT_SALES[j]);
+	S.QTR_SALES[j/3]=S.QTR_SALES[j/3]+S.UNIT_SALES[j];
+}
+fseek(FP, i*sizeof(S), SEEK_SET);
+fwrite(&S, sizeof(S), 1, FP);
+gotoxy(20,24);
+cout<<"YOU UPDATED RECORD OF: "<<S.NAME;
+break;
+}
+}
+if(feof(FP)){gotoxy(15,15);
+ cout<<"SORRY ID NUMBER NOT FOUND";}
+fclose(FP);
+
+}
+
+
+void PRODUCT::VIEW_RECORD()
+{
+ int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+unsigned long int ID;
+ gotoxy(20,7);
+cout<<"ENTER ID NUMBER: ";
+fscanf(stdin,"%ld",&ID);
+PRODUCT S;
+FP=fopen("INV.DAT","rb");
+rewind(FP);
+while(fread(&S, sizeof(S), 1, FP)!=0)
+{
+if(S.ID==ID)
+{
+ gotoxy(15,10);
+cout<<"PRODUCT NAME: "<<S.NAME;
+ gotoxy(15,12);
+cout<<"PRODUCT ID: "<<S.ID;
+ gotoxy(15,14);
+cout<<"UNIT COST PRICE: "<<S.UCP;
+ gotoxy(15,16);
+cout<<"HOLDING COST (IN PERCENTAGE): "<<S.HC;
+ gotoxy(15,18);
+cout<<"FIX ORDER COST: "<<S.FOC;
+ gotoxy(15,20);
+cout<<"LEAD TIME (IN DAYS): "<<S.LT;
+ gotoxy(15,22);
+cout<<"MINIMUM SAFETY STOCK: "<<S.SS;
+ gotoxy(15,24);
+cout<<"CATAGORY (MOVING AVERAGE<1> | SEASONAL INDEX<2>) : "<<S.CATAGORY;
+break;
+}
+}
+if(feof(FP)){    gotoxy(15,15);
+ printf("SORRY PRODUCT ID NOT FOUND");}
+fclose(FP);
+
+}
+
+
+void PRODUCT::FORECAST()
+{  int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+	unsigned long int ID;
+	i=-1;
+	PRODUCT S;
+	gotoxy(20,6);
+	printf("ENTER ID NUMBER: ");
+	fscanf(stdin,"%ld",&ID);
+	FP=fopen("INV.DAT","r+b");
+	rewind(FP);
+	while(fread(&S, sizeof(S), 1, FP)!=0)
+	{
+
+		i++;
+		if(S.ID==ID)
+		{
+			if(S.CATAGORY==1){
+				MA(&S);}
+			else{
+				SI(&S);}
+		}
+		fseek(FP, i*sizeof(S), SEEK_SET);
+		fwrite(&S, sizeof(S), 1, FP);
+		break;
+	}
+	if(feof(FP)){ gotoxy(17,20);
+	 cout<<"SORRY ID NUMBER NOT FOUND";}
+	fclose(FP);
+}
+
+
+void PRODUCT::MA(PRODUCT *P)
+{
+	unsigned int MEAN[8]={0,0,0,0,0,0,0,0}, DEVIATION[8]={0,0,0,0,0,0,0,0} ;
+	int i,j,k,N;
+	for(i=0; i<8; i++)
+	{
+
+		for(j=i; j<8; j++)
+		{
+			for(k=0; k<=i; k++)
+			{
+				MEAN[j] = (MEAN[j] + P->QTR_SALES[j-k]) ;
+			}
+			MEAN[j]=MEAN[j]/(i+1);
+		}
+		for(k=i+1;k<7;k++)
+		{
+			DEVIATION[k] = MEAN[k]-(P->QTR_SALES[k+1]);
+		}
+		for(k=i+1;k<7;k++)
+		{
+			N=N+DEVIATION[k];
+		}
+		DEVIATION[i+1]=N/(8-(i+1));
+	}
+	for(i=1; i<7; i++)
+	{
+			if(DEVIATION[0]<=DEVIATION[i])
+			{
+				DEVIATION[0]=DEVIATION[i];
+				N=i+1;
+			}
+	}
+	for(i=8-N;i<=N;i++)
+	{
+		P->DEMAND=P->DEMAND + P->QTR_SALES[i-1];
+	}
+	P->DEMAND=P->DEMAND/N;
+
+}
+
+
+void PRODUCT::SI(PRODUCT *P)
+{
+
+	P->DEMAND=P->QTR_SALES[3];
+
+}
+
+void PRODUCT::EOQ(PRODUCT *P)
+{
+int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+	gotoxy(20,8);
+	cout << "Initializing EOQ";
+	P->_EOQ=sqrt(2*P->DEMAND*P->FOC/(P->HC*P->UCP));
+	gotoxy(15,12);
+	cout << "EOQ is :" << P->_EOQ;
+	P->QHC= P->_EOQ*P->HC;
+	P->QOC= P->_EOQ*P->FOC;
+	P->TQC= P->QHC + P->QOC;
+	gotoxy(15,14);
+	cout<<"Quarter Holding Cost : "<<P->QHC;
+	gotoxy(15,16);
+	cout<<"Quarter Order Cost   : "<<P->QOC;
+	gotoxy(15,18);
+	cout<<"Total Quarter Cost   : "<<P->TQC;
+	getch();
+}
+
+void PRODUCT::RPI(PRODUCT *P)
+{ int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+    gotoxy(20,10);
+    cout << "initializing RPI";
+	P->_RPI = ( ( (P->DEMAND/90) * P->LT ) + ( ( (P->SS) / 100 ) * (P->DEMAND) ));
+	gotoxy(17,15);
+	cout <<"RPI is :" << P->_RPI;
+	getch();
+}
+
+
+
+void NOTE::REMINDER()
+{
+int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+fflush(stdin);
+FP = fopen("NOTES.DAT","a");
+NOTE N;
+gotoxy(20,8);
+cout<<"ENTER NOTE OR REMINDER :";
+gotoxy(10,12);
+gets(N._NOTE);
+fprintf(FP, "%s\n", N._NOTE);
+gotoxy(17,20);
+cout<<"NOTES HAVE BEEN SAVED";
+fclose(FP);
+
+}
+
+void NOTE::VIEW_REMINDER()
+{
+
+char CH='0';
+FP = fopen("NOTES.DAT","r");
+NOTE N;
+fflush(stdin);
+gotoxy(20,8);
+cout<<"NOTES OR REMINDERS :";
+while((fgets(N._NOTE, 500, FP)!=0)&&(CH=='0'))
+{
+int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+gotoxy(10,12);
+fprintf(stdout,"%s",N._NOTE);
+gotoxy(17,20);
+cout<<"PRESS 0 TO READ THE NEXT NOTE OR 1 TO EXIT";
+CH=getch();
+}
+if(feof(FP))
+ {
+  setcolor(1);
+  for(int i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+  gotoxy(20,8);
+  cout<<"NOTES OR REMINDERS :";
+  gotoxy(17,20);
+  cout<<"SORRY NO NOTES OR REMINDERS";
+ }
+
+
+fclose(FP);
+
+}
+
+void NOTE::CLEAR_REMINDER()
+{
+int i;
+ setcolor(1);
+  for(i=0;i<=313;i++)
+  {rectangle(319-i,47,320+i,473);
+  }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+gotoxy(20,8);
+cout<<"ARE YOU SURE ?";
+gotoxy(20,10);
+cout<<"PRESS 'Y' TO CONFIRM / 'N' TO CANCEL";
+char C = getch();
+if(C=='Y'||C=='y')
+{
+FP = fopen("NOTES.DAT","w");
+fclose(FP);
+gotoxy(17,20);
+cout<<".......RECORD CLEARED\n";
+}
+else
+{
+gotoxy(17,20);
+cout<<".......ACTION CANCELLED\n";
+}
+
+}
+
+
+void BEGIN::WARE_MENU()
+{
+ int i;
+   setcolor(1);
+   for(i=0;i<=313;i++)
+   {rectangle(319-i,47,320+i,473);
+   }
+  for(i=0;i<3;i++)
+  {
+   setcolor(4);
+   if(i==1)
+    setcolor(15);
+   rectangle(5+i,47+i,634-i,473-i);
+  }
+  char CH;
+	gotoxy(35,6);
+	printf("WARE HOUSE");
+	gotoxy(20,9);
+	printf("PRESS THE OPTION NUMBER AS PER REQUIREMENT");
+	gotoxy(20,11);
+	printf("1 : TO VIEW PRODUCT DETAILS");
+	gotoxy(20,13);
+	printf("2 : TO LIST NEW PRODUCT");
+	gotoxy(20,15);
+	printf("3 : TO UPDATE A PRODUCT DETAILS");
+	gotoxy(20,17);
+	printf("4 : TO DELETE A PRODUCT LISTING");
+	gotoxy(20,19);
+	printf("5 : TO CREATE REMINDER OR NOTE");
+	gotoxy(20,21);
+	printf("6 : TO VIEW REMINDERS OR NOTES");
+	gotoxy(20,23);
+	printf("7 : TO DELETE ALL REMINDERS AND NOTES");
+	gotoxy(20,25);
+	printf("0 : TO RETURN TO MAIN MENU");
+	l:
+	CH = getch();
+
+switch(CH)
+{
+case '1':
+VIEW_RECORD();
+getch();
+WARE_MENU();
+break;
+
+case '2':
+CREATE();
+WARE_MENU();
+break;
+
+case '3':
+UPDATE();
+getch();
+WARE_MENU();
+break;
+
+case '4':
+DELETE();
+getch();
+WARE_MENU();
+break;
+
+
+case '5':
+REMINDER();
+getch();
+WARE_MENU();
+break;
+
+case '6':
+VIEW_REMINDER();
+getch();
+WARE_MENU();
+break;
+
+case '7':
+CLEAR_REMINDER();
+getch();
+WARE_MENU();
+break;
+
+case '0': gotoxy(60,25);
+	  cout<<"BYE:)";
+	  G.select();
+
+break;
+
+default:
+goto l;
+
+}
+}
+
+void BEGIN::EOQ_MENU()
+{
+FORECAST();
+EOQ(P);
+
+}
+
+void BEGIN::RPI_MENU()
+{
+FORECAST();
+RPI(P);
+
+}
+
+
+int main()
+{
+ return 0;
+}

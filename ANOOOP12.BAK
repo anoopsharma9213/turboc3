@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<conio.h>
+
+struct book{
+	    char n[25];
+	    float p,b;
+	   };
+void main()
+{
+ struct book x[3];
+ int i;
+ clrscr();
+ for(i=0;i<3;i++)
+ {
+  printf("Enter book name: ");
+  scanf("%s",&x[i].n);
+  printf("Enter no. of pages: ");
+  scanf("%f",&x[i].p);
+  printf("Enter book price: ");
+  scanf("%f",&x[i].b);
+ }
+ clrscr();
+ printf("\n\tBILL\n\n");
+ for(i=0;i<3;i++)
+  printf("%d. %s  %f  %f\n",i+1,x[i].n,x[i].p,x[i].b);
+ getch();
+}

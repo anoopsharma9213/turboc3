@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<conio.h>
+void main()
+{
+ char ch,ch1;
+ int i;
+ clrscr();
+/* m:
+ ch=getch();
+ printf("%d\n",ch);
+/* if(ch==0)
+ {
+  ch1=getch();
+  if(ch1==72)
+   printf("up\n");
+  \
+
+
+ if(ch!=13)
+  goto m;*/
+
+  for(i=100;i<150;i++)
+  { printf("%c %d  \n",i,i);
+//   delay(10);
+  }
+ getch();
+}

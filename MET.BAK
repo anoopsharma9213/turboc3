@@ -1,0 +1,10 @@
+//#include<stdio.h>
+
+void main()
+{
+ int a,b; a=b=3;
+ clrscr();
+ if(++a<5||++a<6)
+  printf("%d",a);
+ getch();
+}

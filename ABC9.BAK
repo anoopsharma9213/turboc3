@@ -1,0 +1,51 @@
+#include<stdio.h>
+
+struct india{
+	     char pm[30],pr[30],nflwr[20],nani[20],nsport[20];
+	     char nsong[20],nanth[20],pop[20],ncap[20],nemb[20];
+	     char norel[20][20],nomc[20][20],olang[20];
+	     char area[20],nbird[20],norivr[20][20],intrd[400];
+	     int nopp,norln,nos,nout,nomci,nor;
+	    }g;
+void main()
+{
+ FILE *f1;
+ char s[20];
+ int i=0,ch;
+ clrscr();
+ printf("Enter File name: ");
+ gets(s);
+ f1=fopen(s,"w");
+ if(f1==NULL)
+  printf("File could not be opened");
+ else
+ {
+  printf("PM/pr/fl/ani/sp/b/sng/ant/emb/cap/pop/ol/ar/nopp/norel/nos/nout: ");
+  printf("\nnomc/nor/norel/nomc/nori/intr");
+  gets(g.pm);
+  gets(g.pr);
+  gets(g.nflwr);
+  gets(g.nani);
+  gets(g.nsport);
+  gets(g.nsong);
+  gets(g.nanth);
+  gets(g.nemb);
+  gets(g.ncap);
+  gets(g.pop);
+  gets(g.olang);
+  gets(g.area);
+  scanf("%d%d%d%d%d",&g.nopp,&g.norln,&g.nos,&g.nout,&g.nomci,&g.nor);
+  a:
+  gets(g.norel[i]);gets(g.nomc[i]);gets(g.norivr[i]);
+  printf("Enter ch:");
+  ch=getch();
+  if(ch!=13)
+  {i++;
+   goto a;
+  }
+  gets(g.intrd);
+  fflush(stdin);
+ }
+ fclose(f1);
+ getch();
+}

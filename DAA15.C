@@ -1,0 +1,48 @@
+#include<stdio.h>
+
+int w[10][10],d[10],q[10],neig[10][10],n,v,S[10];
+
+void dist();
+
+void main()
+{
+ int i,j;
+ clrscr();
+ printf("Enter number of vertices: ");
+ scanf("%d",&n);
+ printf("Enter neighbour matrix:\n");
+ for(i=0;i<n;i++)
+  for(j=0;j<n;j++)
+  {
+   printf("Enter neigh[%d][%d] : ",i+1,j+1);
+   scanf("%d",&neig[i][j]);
+  }
+ printf("Enter weight matrix:\n");
+ for(i=0;i<n;i++)
+  for(j=0;j<n;j++)
+  if(neig[i][j]!=0)
+  {
+   printf("Enter w[%d][%d] : ",i+1,j+1);
+   scanf("%d",&neig[i][j]);
+  }
+ dist();
+}
+
+void dist()
+{
+ int s,u,i,j,k,f,e;
+ s=0;
+ d[s]=0;
+ s++;
+ v--;
+ for(i=s;i<n;i++)
+  d[i]=30000;
+ k=-1;
+ for(i=s;i<n;i++)
+  q[i]=i;
+ while(v!=0)
+ {
+  u=d[s];
+  for(i)
+ }
+}

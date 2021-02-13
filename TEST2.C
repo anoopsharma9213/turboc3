@@ -1,0 +1,60 @@
+#include<time.h>
+
+int a[1000];
+
+int part(int, int);
+void quick(int,int);
+
+void main()
+{
+ clock_t start, end;
+ float time;
+ int i,n=1000;
+ clrscr();
+ for(i=0;i<n;i++)
+  a[i]=1000-i;
+ start = clock();
+ quick(0,n-1);
+ end = clock();
+ for(i=0;i<n;i++)
+  printf("%d",a[i]);
+ time = (end-start)/CLK_TCK;
+ printf("\nElements Sorted\n\n\tTime Taken : %.20f",time);
+ getch();
+}
+
+void quick(int beg, int end)
+{
+ int q;
+ if(beg<end)
+ {
+  q = part(beg,end);
+  quick(beg,q-1);
+  quick(q+1,end);
+ }
+}
+
+int part(int p, int r)
+{
+ int x = a[r], i=p-1, j;
+ for(j=p;j<=r-1;j++)
+ {
+  if(a[j]<=x)
+  {
+   i++;
+   if(a[i]!=a[j])
+   {
+    a[i]=a[i]+a[j];
+    a[j]=a[i]-a[j];
+    a[i]=a[i]-a[j];
+   }
+  }
+ }
+ if(a[i+1]!=a[r])
+ {
+  a[i+1] = a[i+1]+a[r];
+  a[r]=a[i+1]-a[r];
+  a[i+1]=a[i+1]-a[r];
+ }
+ return i+1;
+}

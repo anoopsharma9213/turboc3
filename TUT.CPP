@@ -1,0 +1,52 @@
+#include<iostream.h>
+#include<conio.h>
+#include<stdio.h>
+#include<string.h>
+
+class string{
+	     char s[100];
+	     int len;
+      public:
+	     string()
+	     {
+	      s[0]=NULL;
+	      len=0;
+	     }
+	     string(char *str)
+	     {
+	      strcpy(s,str);
+	      len=strlen(str);
+	     }
+	     string(string &A)
+	     {
+	      strcpy(s,A.s);
+	      len=A.len ;
+	     }
+	     string concat(string s1,string s2)
+	     {
+	      strcat(s1.s,s2.s);
+	      return s1;
+	     }
+	     void display()
+	     {
+	      cout<<"\nString : ";
+	      cout<<s;
+	      cout<<"\nLength : "<<len;
+	     }
+	    };
+
+int main()
+{
+ clrscr();
+ char str[100];
+ string s1;
+ cout<<"Enter a string : ";
+ gets(str);
+ string s2(str),s3("Well Done!");
+ s1=s2;
+ s1.display();
+ s3=s3.concat(s3,s2);
+ s3.display();
+ getch();
+ return 0;
+}

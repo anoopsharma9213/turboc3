@@ -1,0 +1,14 @@
+#include<iostream.h>
+#include<conio.h>
+#include<assert.h>
+
+
+int main()
+{
+ clrscr();
+ for(int i=1;i<3;i++)
+  for(int j=3;j>=i;j--)
+  { cout<<j;assert (i!=j);}
+ getch();
+ return 0;
+}

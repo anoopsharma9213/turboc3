@@ -1,0 +1,57 @@
+#include<stdio.h>
+
+void main()
+{
+ int at[10],bt[10],tt[10],wt[10],tbt[10],ts,i,j,n,total=0,ref=0;
+ float awt=0,att=0;
+ clrscr();
+ printf("Enter the number of Process: ");
+ scanf("%d",&n);
+ for(i=0;i<n;i++)
+ {
+  printf("Enter burst time for %d process: ",i+1);
+  scanf("%d",&bt[i]);
+  printf("Enter arrival time for %d process: ",i+1);
+  scanf("%d",&at[i]);
+  tbt[i]=bt[i];
+  total+=bt[i];
+ }
+ printf("Enter Time Slice : ");
+ scanf("%d",&ts);
+ while(ref<total)
+ {
+  for(i=0;i<n;i++)
+  {
+   if(at[i]<=ref&&tbt[i]>0)
+    if(tbt[i]>=ts)
+    {tt[i]=ref+ts;
+     ref+=ts;
+     tbt[i]-=ts;
+    }
+    else{tt[i]=ref+tbt[i];
+	 ref+=tbt[i];
+	 tbt[i]-=tbt[i];
+	}
+  }
+ }
+ for(i=0;i<n;i++)
+ {
+  tt[i]-=at[i];
+  wt[i]=tt[i]-bt[i];
+  awt+=wt[i];
+  att+=tt[i];
+ }
+ clrscr();
+ printf("Details of all Process: \n");
+ printf("\nTime Slice : %d\n",ts);
+ printf("\nProcess\tBurst Time\tArrival Time\tWaiting Time\tTurnaround Time\n");
+ for(i=0;i<n;i++)
+ {
+  printf("\n%4d\t%7d\t%14d\t%16d\t%10d",i+1,bt[i],at[i],wt[i],tt[i]);
+ }
+ awt/=n;
+ att/=n;
+ printf("\n\n\tAverage Waiting Time: %.2f",awt);
+ printf("\n\tAverage Turnaround Time: %.2f",att);
+ getch();
+}

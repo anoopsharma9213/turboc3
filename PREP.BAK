@@ -1,0 +1,12 @@
+#include<stdio.h>
+
+int main()
+{
+ short int i=0,j=2,k=0;
+ clrscr();
+
+ if(i,j,k)
+  printf("%u,",i);
+ getch();
+ return 0;
+}

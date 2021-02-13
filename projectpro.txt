@@ -1,0 +1,323 @@
+#include<iostream.h>
+#include<conio.h>
+#include<string.h>
+#include<stdlib.h>
+
+
+#define MAXPATIENTS 100
+
+
+struct patient
+{
+   char FirstName[50];
+   char LastName[50];
+   char ID[20];
+};
+
+
+
+class queue
+{
+   public:
+   queue (void);
+   int AddPatientAtEnd (patient p);
+   int AddPatientAtBeginning (patient p);
+   patient GetNextPatient (void);
+   int RemoveDeadPatient (patient * p);
+   void OutputList (void);
+   char DepartmentName[50];
+   private:
+   int NumberOfPatients;
+   patient List[MAXPATIENTS];
+};
+
+
+
+
+queue::queue ()
+{
+   // constructor
+   NumberOfPatients = 0;
+}
+
+
+int queue::AddPatientAtEnd (patient p)
+{
+
+  if (NumberOfPatients >= MAXPATIENTS)
+   {
+      // queue is full
+      return 0;
+   }
+      
+      else
+      List[NumberOfPatients] = p;  NumberOfPatients++;
+      return 1;
+}
+
+
+int queue::AddPatientAtBeginning (patient p)
+{
+   
+   int i;
+   if (NumberOfPatients >= MAXPATIENTS)
+   {
+      // queue is full
+      return 0;
+   }
+
+   
+   for (i = NumberOfPatients-1; i >= 0; i--)
+   {
+      List[i+1] = List[i];
+   }
+      List[0] = p;  NumberOfPatients++;
+   return 1;
+}
+
+
+patient queue::GetNextPatient (void)
+{
+   int i;  patient p;
+   if (NumberOfPatients == 0) {
+   // queue is empty
+   strcpy(p.ID,"");
+   return p;}
+   
+   p = List[0];
+   
+   NumberOfPatients--;
+   for (i=0; i<NumberOfPatients; i++)
+   {
+      List[i] = List[i+1];
+   }
+   
+   return p;
+}
+
+
+int queue::RemoveDeadPatient (patient * p)
+{
+   int i, j, found = 0;
+   // search for patient
+   for (i=0; i<NumberOfPatients; i++)
+	{
+      		if (stricmp(List[i].ID, p->ID) == 0)
+		{
+	 	
+	 	*p = List[i];  found = 1;
+	 	
+	 	NumberOfPatients--;
+	 		for (j=i; j<NumberOfPatients; j++)
+				{
+	    				List[j] = List[j+1];
+				}
+		}
+	}
+   return found;
+}
+
+
+void queue::OutputList (void)
+{
+   
+   int i;
+   if (NumberOfPatients == 0)
+	{
+      		cout << "
+Queue is empty";
+	}
+   else
+	{
+
+		for (i=0; i<NumberOfPatients; i++)
+		{
+			cout << "" << List[i].FirstName<<endl;
+	 		cout << " " << List[i].LastName<<endl;
+	 		cout << " " << List[i].ID<<endl;
+		}
+	}
+}
+
+
+
+patient InputPatient (void)
+{
+   
+   patient p;
+   cout << "Please enter data for new patient"<<endl<<First name: ";
+   cin.getline(p.FirstName, sizeof(p.FirstName));
+   cout << "Last name: "<<;
+   cin.getline(p.LastName, sizeof(p.LastName));
+   cout << endl<<"
+Social security number: ";
+   cin.getline(p.ID, sizeof(p.ID));
+   
+   if (p.FirstName[0]==0 || p.LastName[0]==0 || p.ID[0]==0)
+	{
+      		//rejected
+      		strcpy(p.ID,"");
+      		cout << " Data not valid. Operation cancelled.";
+      		getch();
+	}
+   return p;
+}
+
+
+void OutputPatient (patient * p)
+{
+      if (p == NULL || p->ID[0]==0)
+	{
+      		cout << "No patient";
+      		return;
+	}
+   else
+   cout << "Patient data:"<<endl;
+   cout << "First name: " << p->FirstName<<endl;
+   cout << "Last name: " << p->LastName<<endl;
+   cout << "Social security number: " << p->ID<<endl;
+}
+
+int ReadNumber()
+{
+   char buffer[20];
+   cin.getline(buffer, sizeof(buffer));
+   return atoi(buffer);
+}
+
+
+void DepartmentMenu (queue * q)
+{
+department
+   int choice = 0, success;  patient p;
+   while (choice != 6)
+	{  clrscr();
+      	   cout << "Welcome to department: " << q->DepartmentName;
+      	   cout << "Please enter your choice:"<<endl;
+      	   cout << "1:  Add normal patient"<<endl;
+      	   cout << "2:  Add critically ill patient"<<endl;
+      	   cout << "3:  Take out patient for operation"<<endl;
+      	   cout << "4:  Remove dead patient from queue"<<endl;
+      	   cout << "5:  List queue"<<endl;
+      	   cout << "6:  Change department or exit"<<endl;
+      	   
+      	   choice = ReadNumber();
+      	switch (choice)
+	  {
+      		case 1:   // Add normal patient
+	 	p = InputPatient();
+	 	if (p.ID[0])
+		   {
+	    		success = q->AddPatientAtEnd(p);
+	    		clrscr();
+	    		  if (success)
+			    {
+	       			cout << "Patient added: "<<endl;
+
+			    }
+	        else
+		   {cout << "Error: The queue is full. Cannot add patient:"<<endl;
+		   }
+	    		OutputPatient(&p);
+	    		cout << "Press any key"<<endl;
+	    		getch();
+	  }
+	 break;
+
+      case 2:   // Add critically ill patient
+	 p = InputPatient();
+	 if (p.ID[0])
+	     {
+	    	success = q->AddPatientAtBeginning(p);
+	    	clrscr();
+	    	  if (success)
+			{
+	       		  cout << "Patient added:"<<endl;
+	     		}
+	 	  else
+	     		{
+	       		  cout << " The queue is full. Cannot add patient:"<<endl;
+			}
+                          OutputPatient(&p);
+	    		  cout << "Press any key"<<endl;
+	    		  getch();
+	     }
+	 break;
+
+      case 3:   // Take out patient for operation
+	 p = q->GetNextPatient();
+	 clrscr();
+	 if (p.ID[0])
+	    {
+	       cout << "Patient to operate: "<<endl;
+	       OutputPatient(&p);}
+	 else
+	    {
+	       cout << "There is no patient to operate."<<endl;
+	    }
+	       cout << "Press any key"<<endl;
+	       getch();
+	       break;
+
+      case 4:   // Remove dead patient from queue
+	 p = InputPatient();
+	 if (p.ID[0])
+	   {
+	        success = q->RemoveDeadPatient(&p);
+	        clrscr();
+	          if (success)
+		      {
+	       		cout << "Patient removed:<<endl";
+		      }
+	    	  else
+		      {
+	       		cout << "Error: Cannot find patient: "<<endl;
+		      }
+	   	OutputPatient(&p);
+	    	cout << "Press any key"<<endl;
+	    	getch();
+	   }
+	 break;
+
+      case 5:   
+	 clrscr();
+	 q->OutputList();
+	 cout << "Press any key"<<endl;
+	 getch();  break;
+	 }
+      }
+}
+
+
+void main ()
+{
+   int i, MenuChoice = 0;
+   queue departments[3];
+   strcpy (departments[0].DepartmentName, "Heart clinic");
+   strcpy (departments[1].DepartmentName, "Lung clinic");
+   strcpy (departments[2].DepartmentName, "Plastic surgery");
+
+   while (MenuChoice != 4)
+	{
+      	   clrscr();
+      	   cout << "Welcome to Software City Hospital";
+      	   cout << "Please enter your choice: ";
+          for (i = 0; i < 3; i++)
+		{
+	 	     cout<<" " << (i+1) << ":  " << departments[i].DepartmentName;
+		}
+      	  cout << "4:  Exit";
+      	   	  MenuChoice = ReadNumber();
+      	  
+      		if (MenuChoice >= 1 && MenuChoice <= 3)
+		    {
+	 		DepartmentMenu (departments + (MenuChoice-1));
+		    }
+	}
+}
+
+
+
+
+
+

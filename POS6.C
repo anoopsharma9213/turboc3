@@ -1,0 +1,118 @@
+#include<stdio.h>
+
+void main()
+{
+ int m,n,avail[100],ss[100],i,j,counter=0,flag,k;
+ int rm[100][100],ra[100][100],rn[100][100];
+ clrscr();
+ printf("Enter the number of Process: ");
+ scanf("%d",&m);
+ printf("Enter the number of Resources: ");
+ scanf("%d",&n);
+ for(i=0;i<m;i++)
+ {printf("Process %d :\n",i+1);
+  for(j=0;j<n;j++)
+  {printf("Enter allocated instance for resource %d :",j+1);
+   scanf("%d",&ra[i][j]);
+   printf("Enter max instance required for resource %d :",j+1);
+   scanf("%d",&rm[i][j]);
+   rn[i][j]=rm[i][j]-ra[i][j];
+  }
+ }
+ printf("Enter Available Instances for:\n");
+ for(i=0;i<n;i++)
+ {printf("Resource %d: ",i+1);
+  scanf("%d",&avail[i]);
+ }
+ clrscr();
+ printf("\nAllocated\n");
+ for(i=0;i<m;i++)
+ {
+  for(j=0;j<n;j++)
+  {
+   printf("%d ",ra[i][j]);
+  }
+  printf("\n");
+ }
+ printf("\nMax\n");
+ for(i=0;i<m;i++)
+ {
+  for(j=0;j<n;j++)
+  {
+   printf("%d ",rm[i][j]);
+  }
+  printf("\n");
+ }
+ printf("\nNeed\n");
+ for(i=0;i<m;i++)
+ {
+  for(j=0;j<n;j++)
+  {
+   printf("%d ",rn[i][j]);
+  }
+  printf("\n");
+ }
+ printf("\nAvailable Instances: \n");
+ for(i=0;i<n;i++)
+  printf("%d ",avail[i]);
+
+ for(i=0,k=0;counter<m;i++)
+ {
+  if(i==m)
+  {i=0;
+   k++;
+  }
+  if(k==0)
+  {
+   flag=0;
+   for(j=0;j<n;j++)
+    if(rn[i][j]!=0)
+     flag++;
+   if(flag==0)
+   {
+    for(j=0;j<n;j++)
+    {rn[i][j]=0;
+     avail[j]+=ra[i][j];
+    }
+    ss[counter]=i;
+    counter++;
+    continue;
+   }
+  }
+  if(k>0)
+  {
+   flag=0;
+   for(j=0;j<n;j++)
+    if(rn[i][j]!=0)
+     flag++;
+   if(flag==0)
+    continue;
+  }
+  flag=0;
+  for(j=0;j<n;j++)
+   if(rn[i][j]>avail[j])
+    flag++;
+   if(flag==0)
+   {
+    for(j=0;j<n;j++)
+    {rn[i][j]=0;
+     avail[j]+=ra[i][j];
+    }
+    ss[counter]=i;
+    counter++;
+   }
+   else{
+	if(k>counter)
+	{flag=200;
+	 break;
+	}
+       }
+ }
+ if(flag==200)
+  printf("\n\nNo Safe Sequence Found!!!!");
+ else {printf("\n\nSafe Sequence is :\n");
+       for(i=0;i<m;i++)
+	printf("P%d ",ss[i]+1);
+      }
+ getch();
+}

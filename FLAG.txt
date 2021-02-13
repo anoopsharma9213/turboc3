@@ -1,0 +1,103 @@
+#include<stdio.h>
+ #include<graphics.h>
+ #include<dos.h>
+ #include<conio.h>
+ 
+void flag1();
+ void flag2();
+ void flag3();
+ 
+void main()
+ {
+ int driver=DETECT,mode;
+ initgraph(&driver,&mode,"e:\\LANGUAGE\\T…
+while(!kbhit())
+ {
+ cleardevice();
+ flag3();
+ setcolor(6);
+ settextstyle(GOTHIC_FONT,HORIZ_DIR,2);
+ outtextxy(300,300,"NATIONAL FLAG");
+ delay(250);
+ cleardevice();
+ 
+flag1();
+ setcolor(15);
+ settextstyle(GOTHIC_FONT,HORIZ_DIR,2);
+ outtextxy(300,300,"NATIONAL FLAG");
+ delay(250);
+ cleardevice();
+ 
+flag2();
+ setcolor(2);
+ settextstyle(GOTHIC_FONT,HORIZ_DIR,2);
+ outtextxy(300,300,"NATIONAL FLAG");
+ delay(250);
+ }
+ 
+getch();
+ closegraph();
+ 
+}
+ 
+void flag1()
+ {
+ int i;
+ setfillstyle(SOLID_FILL,6);
+ bar(50,50,300,100);
+ setfillstyle(SOLID_FILL,WHITE);
+ bar(50,100,300,150);
+ setfillstyle(SOLID_FILL,GREEN);
+ bar(50,150,300,200);
+ setfillstyle(SOLID_FILL,8);
+ bar(40,20,50,460); /* flagpole */
+ setcolor(9);
+ setfillstyle(SOLID_FILL,WHITE);
+ 
+for(i=0;i<360;i=i+15)
+ pieslice(175,125,i,i+15,25);
+ }
+ 
+void flag2()
+ {
+ int i;
+ int r1[8] = { 50,50,300,75,300,125,50,100 };
+ int r2[8] = { 50,100,300,125,300,175,50,150 };
+ int r3[8] = { 50,150,300,175,300,225,50,200 };
+ 
+setcolor(0);
+ setfillstyle(SOLID_FILL,6);
+ fillpoly(4,r1);
+ setfillstyle(SOLID_FILL,WHITE);
+ fillpoly(4,r2);
+ setfillstyle(SOLID_FILL,GREEN);
+ fillpoly(4,r3);
+ setfillstyle(SOLID_FILL,8);
+ bar(40,20,50,460); // FLAGPOLE//
+ setcolor(9);
+ setfillstyle(SOLID_FILL,WHITE);
+ 
+for(i=0;i<360;i=i+15)
+ pieslice(175,137,i,i+15,25);
+ }
+ 
+void flag3()
+ {
+ int i;
+ int r1[8] = { 50,50,300,25,300,75,50,100 };
+ int r2[8] = { 50,100,300,75,300,125,50,150 };
+ int r3[8] = { 50,150,300,125,300,175,50,200 };
+ setcolor(0);
+ setfillstyle(SOLID_FILL,6);
+ fillpoly(4,r1);
+ setfillstyle(SOLID_FILL,WHITE);
+ fillpoly(4,r2);
+ setfillstyle(SOLID_FILL,GREEN);
+ fillpoly(4,r3);
+ setfillstyle(SOLID_FILL,8);
+ bar(40,20,50,460);
+ setcolor(9);
+ setfillstyle(SOLID_FILL,WHITE);
+ for(i=0;i<360;i=i+15)
+ pieslice(175,113,i,i+15,25);
+ }

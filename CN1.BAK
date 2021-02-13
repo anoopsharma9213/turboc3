@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<math.h>
+
+void main()
+{
+ float n,d,b=0;
+ int a,i=0;
+ clrscr();
+ printf("Enter the number :");
+ scanf("%d",&n);
+ a=(int)n;
+ d=n-a;
+ while(a!=0)
+ {
+  b+=a%2*pow(10,i);
+  a=a/2;
+  i++;
+ }
+ for(i=0;i<4;i++)
+ {
+  b+=((int)(d*2))*0.1;
+  if(d*2==0)
+  break;
+ }
+ printf("%d",b);
+ getch();
+}

@@ -1,0 +1,48 @@
+#include<iostream.h>
+#include<conio.h>
+#include<string.h>
+
+class Laptop{
+	     char sn[10],cn[20];
+	     float p;
+      public:
+	     Laptop()
+	     {
+	      strcpy(sn,"X001");
+	      strcpy(cn,"DELL");
+	      p=40000;
+	     }
+	     Laptop(char *s,char *c,float x)
+	     {
+	      strcpy(sn,s);
+	      strcpy(cn,c);
+	      p=x;
+	     }
+	     void display()
+	     {
+	      cout<<"\nSerial No. : "<<sn;
+	      cout<<"\nCompany : "<<cn;
+	      cout<<"\nPrice : "<<p;
+	     }
+	    };
+
+int main()
+{
+ Laptop A;
+ char s[10],c[20];
+ float p;
+ clrscr();
+ cout<<"Enter Serial No. : ";
+ cin>>s;
+ cout<<"Enter Company : ";
+ cin>>c;
+ cout<<"Enter Price : ";
+ cin>>p;
+ Laptop B(s,c,p);
+ clrscr();
+ A.display();
+ B.display();
+ getch();
+ return 0;
+}
+}

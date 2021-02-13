@@ -1,0 +1,106 @@
+#include<stdio.h>
+
+char G1[20],G2[20],e[20],E[20],T[20];
+
+void draw();
+
+void main()
+{
+ clrscr();
+ strcpy(G1,"E=>E+T|E-T|T");
+ strcpy(G2,"T=>0|1|2|3|4|5|6|7|8|9");
+ printf("Enter an expression with addition,subtraction,no brackets:\n");
+ gets(e);
+ draw();
+ getch();
+}
+
+void draw()
+{
+ int i,j=0,k,x,y,flag=0;
+ char t[3];
+ strcpy(E,"E");
+ for(i=strlen(e)-1;i>=0;i--)
+ {
+  t[0]=e[i];
+  t[1]='\0';
+  if(i==0)
+  {
+   strcat(E,", T");
+   T[j]=e[i];
+   j++;
+  }
+  else if(strstr(G2,t)!=0&&e[i-1]=='+')
+  {
+   strcat(E,", E+T");
+   T[j]=e[i];
+   j++;
+   i--;
+  }
+  else if(strstr(G2,t)!=0&&e[i-1]=='-')
+  {
+   strcat(E,", E-T");
+   T[j]=e[i];
+   j++;
+   i--;
+  }
+  else
+  {
+   printf("Wrong Expression!!!");
+   flag=1;
+   break;
+  }
+ }
+
+ if(flag==0)
+ {
+  k=j;
+  x=0;
+  y=0;
+  for(i=0;E[i]!='\0';i++)
+  {
+   if(E[i]=='E')
+   {
+    for(j=0;j<k;j++)
+    {
+     printf("   ");
+    }
+    printf("E");
+   }
+   else if(E[i]=='+')
+   {
+    printf("  +");
+   }
+   else if(E[i]=='-')
+   {
+    printf("  -");
+   }
+   else if(E[i]=='T')
+   {
+    printf("   T");
+    x=1;
+   }
+   else if(E[i]==','&&E[i+1]==' ')
+   {
+    i++;
+    k--;
+    printf("\n");
+    for(j=0;j<k+1;j++)
+    {
+     printf("   ");
+    }
+    if(x!=0)
+    {
+     printf("       %c",T[y]);
+     y++;
+     x=0;
+    }
+    printf("\n");
+   }
+   if(E[i+1]=='\0')
+   {
+    printf("\n   %c",T[y]);
+   }
+  }
+ }
+}

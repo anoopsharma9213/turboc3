@@ -1,0 +1,18 @@
+#include<stdio.h>
+#include<conio.h>
+void main()
+{
+int a[4]={5,4,3,2},i,temp;
+clrscr();
+for(i=1;i<4;i++)
+{
+temp=a[i];
+if(a[i-1]>temp)
+{
+a[i]=a[i-1];
+i=i+1;
+}
+a[i]=temp;
+}
+for(i=0;i<4;i++){printf("%d",a[i]);}
+}

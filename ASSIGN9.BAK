@@ -1,0 +1,61 @@
+#include<iostream.h>
+#include<conio.h>
+
+class Income{
+	     float bsal,da,hra,ded,tax,taxs,tsal;
+	     void calC()
+	     {taxs=0;
+	      da=(30*bsal)/100;
+	      hra=(15*bsal)/100;
+	      ded=(8*bsal)/100;
+	      if(bsal<=100000)
+	       tax=(20*bsal)/100;
+	      else{tax=(30*bsal)/100;
+		   taxs=(10*bsal)/100;
+		  }
+	      tsal=bsal+da+hra-ded-tax-taxs;
+	     }
+       public:
+	      Income()
+	      {
+	       bsal=0;
+	      }
+	      void input()
+	      {
+	       cout<<"Enter Basic Salary : Rs. ";
+	       cin>>bsal;
+	       calC();
+	      }
+	      void output()
+	      {
+	       cout<<"\n\t\tSalary Table\n";
+	       cout<<"\nBasic Salary                Rs. "<<bsal;
+	       cout<<"\nD.A.                        Rs. "<<da;
+	       cout<<"\nH.R.A.                      Rs. "<<hra;
+	       cout<<"\nDeductions(Canteen & P.F.)  Rs. "<<ded;
+	       cout<<"\nTax                         Rs. "<<tax;
+	       if(bsal>100000)
+		cout<<"\nSurcharge                   Rs. "<<taxs;
+	       cout<<"\n--------------------------------";
+	       cout<<"\nTotal Salary                Rs. "<<tsal;
+	      }
+	     };
+
+int main()
+{
+ Income A,B;
+ clrscr();
+ cout<<"Enter data of 1st Employee: \n";
+ A.input();
+ cout<<"Enter data of 2nd Employee: \n";
+ B.input();
+ clrscr();
+ cout<<"Salary for 1st Employee \n";
+ A.output();
+ getch();
+ clrscr();
+ cout<<"Salary for 2nd Employee \n";
+ B.output();
+ getch();
+ return 0;
+}

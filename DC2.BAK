@@ -1,0 +1,109 @@
+#include<stdio.h>
+#include<conio.h>
+#include<process.h>
+
+int a[10],n,i;
+const int max=10;
+
+void create();
+void insert();
+void deletee();
+void display();
+
+void main()
+{
+ char ch;
+ do{
+    clrscr();
+    printf("\nEnter 1: Creating Array\n");
+    printf("Enter 2: Inserting new element\n");
+    printf("Enter 3: Display List\n");
+    printf("Enter 4: Delete element\n");
+    printf("Enter 0: Exit");
+    printf("\n\nEnter choice : ");
+    ch=getch();
+    switch(ch)
+    {
+     case '1':create();
+	      break;
+     case '2':insert();
+	      break;
+     case '3':display();
+	      break;
+     case '4':deletee();
+	      break;
+     case '0':printf("\nBYE :)");
+	      getch();
+	      exit(0);
+	      break;
+     default :printf("\n\n\t\t\tWrong choice!!!");
+    }
+    getch();
+   }while(1);
+}
+
+void create()
+{
+ printf("\nEnter the number of elements: ");
+ scanf("%d",&n);
+ for(i=0;i<n;i++)
+ {printf("Enter element: ");
+  scanf("%d",&a[i]);
+ }
+}
+
+void insert()
+{
+ int num,p;
+ if(n==max)
+  printf("\nArray Overflow!!!");
+ else{
+      display();
+      printf("\nEnter the number to be inserted: ");
+      scanf("%d",&num);
+      printf("Enter the position: ");
+      scanf("%d",&p);
+      for(i=n-1;i>=p-1;i--)
+       a[i+1]=a[i];
+      a[p-1]=num;
+      n++;
+      printf("\n\n\tElement Inserted!!!");
+     }
+}
+
+void deletee()
+{
+ int num,p,k=0;
+ if(n==0)
+  printf("\nArray Underflow!!!");
+ else{
+      display();
+      printf("\nEnter number to be deleted: ");
+      scanf("%d",&num);
+      for(i=0;i<n;i++)
+       if(a[i]==num)
+       {p=i;
+	k++;
+       }
+      if(k==0)
+       printf("\n\n\tElement not present!!!");
+      else
+      {
+       for(i=p;i<n;i++)
+	a[i]=a[i+1];
+       n--;
+       printf("\n\n\tElement Deleted!!!");
+      }
+     }
+}
+
+void display()
+{
+ if(n==0)
+  printf("\nArray Underflow!!!");
+ else{
+      printf("\nElements: ");
+      for(i=0;i<n;i++)
+       printf("%d ",a[i]);
+     }
+}

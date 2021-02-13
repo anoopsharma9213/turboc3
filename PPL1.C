@@ -1,0 +1,24 @@
+#include<stdio.h>
+#include<string.h>
+
+int main()
+{
+ int *p;
+ char *q;
+ clrscr();
+ printf("Memory Allocated!!!\n");
+ p=(int *)malloc(10);
+ printf("Enter a number: ");
+ scanf("%d",&p);
+ q=(char *)calloc(20,sizeof(char));
+ strcpy(q,"Sharda University");
+ printf("String is %s\nAddress is %p",q,q);
+ q=(char *)realloc(q,30);
+ printf("\nMemory Reallocated!!!");
+ printf("\nString is %s\nAddress is %p",q,q);
+ printf("\nNumber is %d\nAddress is %p",p,p);
+ free(p);
+ free(q);
+ printf("\nMemory Free!!!");
+ return 0;
+}

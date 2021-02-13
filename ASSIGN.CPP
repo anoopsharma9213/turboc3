@@ -1,0 +1,52 @@
+#include<iostream.h>
+#include<conio.h>
+
+class Complex{
+	      double realP,imagP;
+       public:
+	      Complex()
+	      {
+	       realP=3;
+	       imagP=4;
+	       cout<<"Default Values Assigned : "<<realP<<"+"<<imagP<<"i";
+	      }
+	      Complex(double x,double y)
+	      {
+	       realP=x;
+	       imagP=y;
+	      }
+	      void addC(Complex A,Complex B)
+	      {
+	       cout<<"\n\nSum (X+Y)= "<<(A.realP+B.realP);
+	       cout<<"+"<<(A.imagP+B.imagP)<<"i";
+	      }
+	      void subC(Complex A,Complex B)
+	      {
+	       cout<<"\n\nDifference (X-Y)= "<<(A.realP-B.realP);
+	       cout<<"+"<<(A.imagP-B.imagP)<<"i";
+	      }
+	      void prtC()
+	      {
+	       cout<<realP<<"+"<<imagP<<"i =  ("<<realP<<","<<imagP<<")";
+	      }
+	     };
+
+int main()
+{
+ clrscr();
+ cout<<"X :  ";
+ Complex X;
+ double a,b;
+ cout<<"\nEnter a and b of Y: ";
+ cin>>a>>b;
+ Complex Y(a,b);
+ cout<<"\nX : ";
+ X.prtC();
+ cout<<"\nY : ";
+ Y.prtC();
+ X.addC(X,Y);
+ Y.subC(X,Y);
+ cout<<"\n\n\t\tHere i = sqrt(-1)";
+ getch();
+ return 0;
+}

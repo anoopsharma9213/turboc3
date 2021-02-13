@@ -1,0 +1,105 @@
+#include<iostream.h>
+#include<conio.h>
+#include<graphics.h>
+#include<process.h>
+
+typedef struct node{
+	    int info;
+	    struct node *link;
+	   }point;
+
+point *px,*py,*nx,*ny;
+
+class graph{
+	    point *Sx,*Sy;
+	    int n;
+     public:
+	    graph();
+	    void init();
+	   };
+
+graph::graph()
+{
+ Sx=Sy=NULL;
+ int gd=DETECT,gm;
+ clrscr();
+ init();
+ initgraph(&gd,&gm,"");
+ setcolor(4);
+ rectangle(0,0,639,479);
+ setcolor(14);
+ line(60,40,60,360);
+ line(50,350,370,350);
+ for(int x=1;x<=n;x++)
+  line(60+((300/n)*x),348,60+((300/n)*x),352);
+ int a=py->info,b=Sy->info,z,a1=1,b1=1;
+ a=a/10;
+ b=b/10;
+ while(a!=0||b!=0)
+ {a1=a1*10;
+  b1=b1*10;
+  a=a/10;
+  b=b/10;
+ }
+ if(a1<b1)
+  a1=b1;
+  z=(((py->info)/(a1*10))+1)-((Sy->info)/((a1-1)*10));
+ for(x=1;x<=z;x++)
+  line(58,350-((300/z)*x),62,350-((300/z)*x));
+ px=Sx;py=Sy;
+ for(x=1;x<=n;x++)
+ {
+  circle(60+((300/n)*x),350-((py->info)/(a1*10)),2);
+  circle(60+((300/n)*x),350-((py->info)/(a1*10)),0);
+  px=px->link;
+  py=py->link;
+ }
+ getch();
+ closegraph();
+}
+
+void graph::init()
+{
+ int numx,numy,ch,i=1;
+ gotoxy(15,1);
+ cprintf("Press Tab for next and Esc for end");
+ gotoxy(10,4);
+ cprintf("X Axis");
+ gotoxy(20,4);
+ cprintf("Y Axis");
+ do{
+    gotoxy(10,4+i);
+    cin>>numx;
+    gotoxy(20,4+i);
+    cin>>numy;
+    gotoxy(10,4+i);
+    nx=new point;
+    ny=new point;
+    nx->info=numx;
+    ny->info=numy;
+    nx->link=ny->link=NULL;
+    if(Sx==NULL)
+    {
+     Sx=nx;
+     Sy=ny;
+     px=nx;
+     py=ny;
+    }
+    else
+    {
+     px->link=nx;
+     py->link=ny;
+     px=nx;
+     py=ny;
+    }
+    i++;
+    ch=getch();
+   }while(ch==9);
+   n=i-1;
+}
+
+int main()
+{
+ graph A;
+ return 0;
+}

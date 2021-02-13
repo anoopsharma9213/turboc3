@@ -1,0 +1,19 @@
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+void main()
+{
+ struct address{
+		char p[15],c[25];
+		int pin;
+	       };
+ struct emp{
+	    char n[25];
+	    struct address a;
+	   };
+ struct emp e={"Jeru","1234567","Kanpur",16};
+ clrscr();
+ printf("\nName: %s\nPhone: %s",e.n,e.a.p);
+ printf("\nCity: %s\nPin: %d",e.a.c,e.a.pin);
+ getch();
+}

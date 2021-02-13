@@ -1,0 +1,23 @@
+#include<stdio.h>
+
+void TOH(int,char,char,char);
+
+void main()
+{
+ int n;
+ clrscr();
+ printf("Enter number of disc : ");
+ scanf("%d",&n);
+ TOH(n-1,'A','B','C');
+ getch();
+}
+
+void TOH(int n, char x, char y, char z)
+{
+ if(n>0)
+ {
+  TOH(n-1,x,z,y);
+  printf("%c -> %c\n",x,y);
+  TOH(n-1,z,y,x);
+ }
+}
